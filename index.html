@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style> /* CSS for board */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 5px;
+      margin: 20px 0; 
+    }
+
+    .square {
+      width: 100px;
+      height: 100px;
+      background-color: purple;
+      color: white; 
+      border: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .square:hover {
+      background-color: yellow; /* Highlight color on hover: yellow */
+    }
+
+    #turnIndicator, #winCondition {
+      border: 2px solid #333;
+      padding: 10px;
+      margin: 10px;
+      text-align: center;
+    }
+
+    #winConditionTitle {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  </style>
+  <title>Tic Tac Toe</title>
+</head>
+<body>
+
+  <div id="container">
+    <h1>Tic Tac Toe</h1>
+
+    <div id="turnIndicator">It's X's turn</div>
+
+    <div id="board"></div>
+
+    <div id="winCondition">
+      <div id="winConditionTitle">Win Conditions</div>
+    </div>
+  </div>
+
+  <script>
+    const NUM_SQUARES = 9;
+    const boardElement = document.getElementById('board');
+    const turnIndicatorElement = document.getElementById('turnIndicator');
+    const winConditionElement = document.getElementById('winCondition');
+
+    const startingPlayer = Math.random() < 0.5 ? 'X' : 'O'; // Randomly choose X or O to start
+    let currentPlayer = startingPlayer;
+
+    turnIndicatorElement.innerText = "It's " + startingPlayer + "'s turn";
+
+    for (let i = 0; i < NUM_SQUARES; i++) {
+      const id = "sq" + i;
+      const square = document.createElement('div');
+      square.className = 'square';
+      square.id = id;
+      square.addEventListener('click', function() {
+        if (!this.innerText) { // Check if square is empty
+          this.innerText = currentPlayer; // Put the appropriate symbol (X or O) in the square
+          turnIndicatorElement.innerText = "It's " + (currentPlayer === 'X' ? 'O' : 'X') + "'s turn"; // Display whose turn it is
+          this.removeEventListener('click', arguments.callee); // Disable further clicks on the square
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X'; // Switch players
+        }
+      });
+      boardElement.appendChild(square);
+    }
+  </script>
+
+</body>
+</html>
